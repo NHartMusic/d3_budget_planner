@@ -40,7 +40,7 @@
                             <label for='name'>Item Name</label>
                         </div>
                         <div class='input-field'>
-                            <input type='text' id='name'>
+                            <input type='text' id='cost'>
                             <label for='name'>Item Cost (€)</label>
                         </div>
                         <div class='input-field center'>
@@ -59,6 +59,27 @@
             </div>
         </div>
     </div>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.15.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.1/firebase-firestore.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyDFCpwtGhtDzFiOZaxkboEfMbLoozkqlRc",
+            authDomain: "d3-firebase-2070b.firebaseapp.com",
+            databaseURL: "https://d3-firebase-2070b.firebaseio.com",
+            projectId: "d3-firebase-2070b",
+            storageBucket: "d3-firebase-2070b.appspot.com",
+            messagingSenderId: "503206416930",
+            appId: "1:503206416930:web:7690a78498cc11b20ef07b",
+            measurementId: "G-KS2SZRETGC"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore()
+    </script>
 
     <script src='https://d3js.org/d3.v5.min.js'></script>
 
