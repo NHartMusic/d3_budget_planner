@@ -18,15 +18,26 @@
         header {
             margin-bottom: 40px;
         }
+
+        .tip {
+            padding: 10px;
+            background: #333;
+            color: white;
+        }
+
+        .tip .delete {
+            color: hotpink;
+            font-size: 0.8em;
+        }
     </style>
 
 </head>
 
-<body class='indigo'>
+<body class='grey darken-1'>
 
-    <header class='indigo darken-1 section'>
-        <h2 class='center white-text'>Save That Bread</h2>
-        <p class='flow-text grey-text center text-lighten-2'>Monthly Budget Planner</p>
+    <header class='red accent-3 section'>
+        <h2 class='center black-text'>Save That Bread</h2>
+        <p class='flow-text black-text center'>Monthly Budget Planner</p>
     </header>
 
     <div class='container section'>
@@ -34,7 +45,7 @@
             <div class='col s12 m6'>
                 <form class='card'>
                     <div class='card-content'>
-                        <span class='card-title indigo-text'>Add Item:</span>
+                        <span class='card-title black-text'>Add Item:</span>
                         <div class='input-field'>
                             <input type='text' id='name'>
                             <label for='name'>Item Name</label>
@@ -44,10 +55,10 @@
                             <label for='name'>Item Cost (€)</label>
                         </div>
                         <div class='input-field center'>
-                            <button class='btn-large pink white-text'>Add Item</button>
+                            <button class='btn-large red accent-3 black-text'>Add Item</button>
                         </div>
                         <div class='input-field center'>
-                            <p class='red-text' id='error'>Test</p>
+                            <p class='red-text' id='error'></p>
                         </div>
 
                     </div>
@@ -83,9 +94,10 @@
 
     <script src='https://d3js.org/d3.v5.min.js'></script>
 
-    <!-- Compiled and minified JavaScript -->
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js'></script>
 
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.min.js'></script>
     <script src='index.js'></script>
     <script src='graph.js'></script>
 

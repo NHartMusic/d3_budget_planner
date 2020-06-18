@@ -18,7 +18,26 @@ const arcPath = d3.arc()
     .innerRadius(dimensions.radius / 2)
 
 const colour = d3.scaleOrdinal(d3['schemeSet1'])
-const t3 = d3.transition().duration(750)
+
+const legendGroup = svg.append('g')
+    .attr('transform', `translate(${dimensions.width + 40}, 10)`)
+
+const legend = d3.legendColor()
+    .shape('circle')
+    .shapePadding(10)
+    .scale(colour)
+
+const tip = d3.tip()
+    .attr('class', 'tip card')
+    .html(d => {
+        let content = `<div class='name'>${d.data.name}</div>`
+        content += `<div class='cost'>Cost per Month: ${d.data.cost}</div>`
+        content += `<div class='delete'>Click the slice to delete</div>`
+        return content
+    })
+
+graph.call(tip)
+const arcTransition = d3.transition().duration(750)
 
 //update function 
 
@@ -27,19 +46,23 @@ const update = (data) => {
     //update color scale domain 
     colour.domain(data.map(d => d.name))
 
+    //update + call legend
+    legendGroup.call(legend)
+    legendGroup.selectAll('text').attr('fill', 'black')
+
     //join enhanced pie data to path elements
     const paths = graph.selectAll('path')
         .data(pie(data))
 
     //exit selection 
     paths.exit()
-        .transition(t3)
+        .transition(arcTransition)
         .attrTween('d', arcTweenExit)
         .remove()
 
     //dom path updates
     paths.attr('d', arcPath)
-        .transition(t3)
+        .transition(arcTransition)
         .attrTween('d', arcTweenUpdate)
 
     paths.enter()
@@ -50,8 +73,20 @@ const update = (data) => {
         .attr('stroke-width', 3)
         .attr('fill', d => colour(d.data.name))
         .each(function (d) { this._current = d })
-        .transition(t3)
+        .transition(arcTransition)
         .attrTween('d', arcTweenEnter)
+
+    //add event 
+    graph.selectAll('path')
+        .on('mouseover', (d, i, n) => {
+            tip.show(d, n[i])
+            handleMouseOver(d, i, n)
+        })
+        .on('mouseout', (d, i, n) => {
+            tip.hide()
+            handleMouseOut(d, i, n)
+        })
+        .on('click', handleClick)
 }
 
 let data = []
@@ -100,6 +135,32 @@ const arcTweenExit = (d) => {
 // use function keyword to allow use of 'this'
 
 function arcTweenUpdate(d) {
-    console.log(this._current, d)
+
+    //interpolate between two objects
+    let i = d3.interpolate(this._current, d)
+
+    //update current prop with updated data
+    this._current = i(1)
+
+    return function (t) {
+        return arcPath(i(t))
+    }
 }
 
+//event handlers 
+const handleMouseOver = (d, i, n) => {
+    d3.select(n[i])
+        .transition('hoverTransition').duration(300)
+        .attr('fill', '#fff')
+}
+
+const handleMouseOut = (d, i, n) => {
+    d3.select(n[i])
+        .transition('hoverTransition').duration(300)
+        .attr('fill', colour(d.data.name))
+}
+
+const handleClick = (d) => {
+    const id = d.data.id
+    db.collection('expenses').doc(id).delete()
+}
